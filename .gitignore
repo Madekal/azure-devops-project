@@ -1,0 +1,7 @@
+# Ignoruj wtyczki i pamięć podręczną Terraforma
+.terraform/
+.terraform.lock.hcl
+
+# Ignoruj lokalne pliki stanu (stan trzymasz w Azure)
+*.tfstate
+*.tfstate.*
