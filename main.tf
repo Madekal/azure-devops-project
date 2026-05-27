@@ -8,6 +8,8 @@ resource "azurerm_resource_group" "rg" {
 }
 
 
+#VIRTUAL NETWORK - SUBNETS ------------------------------------------
+
 resource "azurerm_virtual_network" "vnet" {
   name                = "vnet-devops-project"
   location            = azurerm_resource_group.rg.location
@@ -32,7 +34,7 @@ resource "azurerm_subnet" "snet2" {
   address_prefixes     = ["10.0.2.0/24"]
 }
 
-
+#STORAGE ACCOUNT ------------------------------------------
 
 resource "azurerm_storage_account" "st" {
   name                     = "storagedevops2026project"
@@ -49,7 +51,7 @@ resource "azurerm_storage_container" "sc" {
 
 }
 
-
+#VIRTUAL MACHINE ------------------------------------------
 
 resource "azurerm_network_interface" "nic" {
   name                = "devops-nic"
@@ -87,5 +89,5 @@ resource "azurerm_linux_virtual_machine" "example" {
     sku       = "22_04-lts"
     version   = "latest"
   }
-}
+}   
     
