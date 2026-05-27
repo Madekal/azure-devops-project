@@ -1,0 +1,34 @@
+name: 'Terraform Azure CI/CD'
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  terraform:
+    name: 'Terraform Deployment'
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Pobranie kodu z repozytorium do pamięci robota
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    # 2. Logowanie do Azure przy użyciu Twojego sekretu JSON
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # 3. Instalacja i konfiguracja narzędzia Terraform na maszynie bota
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+
+    # 4. Inicjalizacja Terraforma (robot połączy się z Twoim Azure Storage na plik stanu)
+    - name: Terraform Init
+      run: terraform init
+
+    # 5. Generowanie planu zmian (sprawdzenie co robot chce zbudować)
+    - name: Terraform Plan
+      run: terraform plan
