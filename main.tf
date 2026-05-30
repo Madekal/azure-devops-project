@@ -193,7 +193,7 @@ resource "azurerm_lb" "lbi" {
 resource "azurerm_lb_backend_address_pool" "lbib" {
   loadbalancer_id = azurerm_lb.lbi.id
   name            = "BackEndAddressPool"
-  virtual_network_id = azurerm_virtual_network.vnet.id
+ 
 }
 
 resource "azurerm_lb_rule" "lb_rule" {
