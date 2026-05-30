@@ -176,7 +176,7 @@ resource "azurerm_linux_virtual_machine" "example" {
 }   
     
 
-#LOAD BALACNER ----------------------------------
+#LOAD BALANCER ----------------------------------
 
 resource "azurerm_lb" "lbi" {
   name                = "LoadBalancerProject"
@@ -210,6 +210,6 @@ resource "azurerm_lb_rule" "lb_rule" {
 resource "azurerm_network_interface_backend_address_pool_association" "nicLB" {
   count                   = 2
   network_interface_id    = azurerm_network_interface.nic[count.index].id
-  ip_configuration_name   = "internal"
+  ip_configuration_name   = "ic-devops"
   backend_address_pool_id = azurerm_lb_backend_address_pool.lbib.id
 }
