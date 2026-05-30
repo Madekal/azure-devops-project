@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "rg" {
-  name     = "rg-devops-project"
-  location = "switzerlandnorth"
+  name     = "rg-devops-project-terraform"
+  location = "swedencentral"
   tags = {
     environment = "devops"
     source = "Terraform"
