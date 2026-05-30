@@ -90,13 +90,17 @@ resource "azurerm_subnet_network_security_group_association" "nsa" {
 }
 
 
-resource "azurerm_public_ip" "pip" {
-  name                = "PublicIPAddressProject"
+resource "azurerm_public_ip" "lb_pip" {
+  name                = "PublicIPAddressProjectLB"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   allocation_method   = "Static"
+  sku = "Standard"
 
 }
+
+
+
 #STORAGE ACCOUNT ------------------------------------------
 
 resource "azurerm_storage_account" "st" {
@@ -117,6 +121,7 @@ resource "azurerm_storage_container" "sc" {
 #VIRTUAL MACHINE ------------------------------------------
 
 resource "azurerm_network_interface" "nic" {
+  count               = 2
   name                = "devops-nic"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
@@ -125,18 +130,33 @@ resource "azurerm_network_interface" "nic" {
     name                          = "ic-devops"
     subnet_id                     = azurerm_subnet.snet1.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id = azurerm_public_ip.pip.id
+    
   }
 }
 
 resource "azurerm_linux_virtual_machine" "example" {
+  count               = 2
   name                = "vm-devops-project"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
-  size                = "Standard_B1ms"
+  size                = "Standard_B2ats_V2"
   admin_username      = "adminuser"
   disable_password_authentication = "false"
   admin_password = "Kwasnejablko1234!"
+  
+
+  # Skrypt instalujący prosty serwer Apache i generujący unikalny napis dla każdej maszyny
+  custom_data = base64encode(<<-EOF
+              #!/bin/bash
+              sudo apt-get update -y
+              sudo apt-get install -y apache2
+              sudo systemctl start apache2
+              sudo systemctl enable apache2
+              echo "<h1>Witaj z maszyny nr: ${count.index}</h1>" | sudo tee /var/www/html/index.html
+              EOF
+  )
+
+
 
   network_interface_ids = [
     azurerm_network_interface.nic.id,
@@ -155,3 +175,41 @@ resource "azurerm_linux_virtual_machine" "example" {
   }
 }   
     
+
+#LOAD BALACNER ----------------------------------
+
+resource "azurerm_lb" "lbi" {
+  name                = "LoadBalancerProject"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  sku = "Standard"
+
+  frontend_ip_configuration {
+    name                 = "PublicIPAddress"
+    public_ip_address_id = azurerm_public_ip.pip.id
+  }
+}
+
+resource "azurerm_lb_backend_address_pool" "lbib" {
+  loadbalancer_id = azurerm_lb.lbi.id
+  name            = "BackEndAddressPool"
+  virtual_network_id = azurerm_virtual_network.vnet
+}
+
+resource "azurerm_lb_rule" "lb_rule" {
+  loadbalancer_id                = azurerm_lb.web_lb.id
+  name                           = "HTTPRule"
+  protocol                       = "Tcp"
+  frontend_port                  = 80
+  backend_port                   = 80
+  frontend_ip_configuration_name = "PublicIPAddress"
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.lbib.id]
+}
+
+
+resource "azurerm_network_interface_backend_address_pool_association" "nicLB" {
+  count                   = 2
+  network_interface_id    = azurerm_network_interface.vm_nic[count.index].id
+  ip_configuration_name   = "internal"
+  backend_address_pool_id = azurerm_lb_backend_address_pool.lb_backend.id
+}
