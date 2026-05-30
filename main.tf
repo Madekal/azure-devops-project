@@ -40,26 +40,29 @@ resource "azurerm_network_security_group" "nsg" {
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
+
+
   security_rule {
-    name                       = "allowHTTP1"
+    name                       = "allowHTTP"
     priority                   = 100
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "*"
     source_port_range          = "*"
-    destination_port_range     = "80"
+    destination_port_range     = ["80", "443"]
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
 
-    security_rule {
-    name                       = "allowHTTP2"
+
+   security_rule {
+    name                       = "AllowSSH"
     priority                   = 110
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "*"
     source_port_range          = "*"
-    destination_port_range     = "443"
+    destination_port_range     = "22"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
@@ -76,6 +79,22 @@ resource "azurerm_network_security_group" "nsg" {
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
+
+}
+
+
+
+resource "azurerm_subnet_network_security_group_association" "nsa" {
+  subnet_id                 = azurerm_subnet.snet1.id
+  network_security_group_id = azurerm_network_security_group.nsg.id
+}
+
+
+resource "azurerm_public_ip" "pip" {
+  name                = "PublicIPAddressProject"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+  allocation_method   = "Static"
 
 }
 #STORAGE ACCOUNT ------------------------------------------
@@ -104,8 +123,9 @@ resource "azurerm_network_interface" "nic" {
 
   ip_configuration {
     name                          = "ic-devops"
-    subnet_id                     = azurerm_subnet.snet2.id
+    subnet_id                     = azurerm_subnet.snet1.id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id = azurerm_public_ip.pip.id
   }
 }
 
@@ -113,7 +133,7 @@ resource "azurerm_linux_virtual_machine" "example" {
   name                = "vm-devops-project"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
-  size                = "Standard_B1s"
+  size                = "Standard_B1ms"
   admin_username      = "adminuser"
   disable_password_authentication = "false"
   admin_password = "Kwasnejablko1234!"
