@@ -37,3 +37,6 @@ jobs:
     - name: Terraform Apply
       if: github.event_name == 'push'
       run: terraform apply -auto-approve
+      env:
+          # Ta linijka mapuje sekret z GitHuba do zmiennej w Terraformie (prefiks TF_VAR_)
+          TF_VAR_vm_admin_password: ${{ secrets.VM_ADMIN_PASSWORD }}
