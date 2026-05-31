@@ -213,3 +213,26 @@ resource "azurerm_network_interface_backend_address_pool_association" "nicLB" {
   ip_configuration_name   = "ic-devops"
   backend_address_pool_id = azurerm_lb_backend_address_pool.lbib.id
 }
+
+
+resource "azurerm_lb_probe" "lbp" {
+  loadbalancer_id     = azurerm_lb.lbi.id
+  name                = "ssh-health-probe"
+  protocol            = "TCP"
+  port                = 80
+  interval_in_seconds = 5
+  number_of_probes    = 2
+
+}
+
+
+resource "azurerm_lb_rule" "lb_rule" {
+  loadbalancer_id                = azurerm_lb.lbi.id
+  name                           = "HTTPRule"
+  protocol                       = "Tcp"
+  frontend_port                  = 80
+  backend_port                   = 80
+  frontend_ip_configuration_name = "PublicIPAddress"
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.lbib.id]
+  probe_id                       = azurerm_lb_probe.lb_probe.id # <-- Dopisana relacja do sondy!
+}
