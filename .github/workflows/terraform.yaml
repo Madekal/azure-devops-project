@@ -10,6 +10,10 @@ jobs:
     name: 'Terraform Deployment'
     runs-on: ubuntu-latest
 
+      env:
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      TF_VAR_vm_admin_password: ${{ secrets.VM_ADMIN_PASSWORD }}
+
     steps:
     # 1. Pobranie kodu z repozytorium do pamięci robota
     - name: Checkout Code
@@ -31,12 +35,10 @@ jobs:
 
     # 5. Generowanie planu zmian (sprawdzenie co robot chce zbudować)
     - name: Terraform Plan
-      run: terraform plan
+      run: terraform plan -input=false
 
 
     - name: Terraform Apply
       if: github.event_name == 'push'
-      run: terraform apply -auto-approve
-      env:
-          # Ta linijka mapuje sekret z GitHuba do zmiennej w Terraformie (prefiks TF_VAR_)
-          TF_VAR_vm_admin_password: ${{ secrets.VM_ADMIN_PASSWORD }}
+      run: terraform apply -auto-approve -input=false
+    
