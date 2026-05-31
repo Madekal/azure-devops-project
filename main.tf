@@ -204,7 +204,7 @@ resource "azurerm_lb_rule" "lb_rule" {
   backend_port                   = 80
   frontend_ip_configuration_name = "PublicIPAddress"
   backend_address_pool_ids       = [azurerm_lb_backend_address_pool.lbib.id]
-  probe_id                       = azurerm_lb_probe.lb_probe.id
+  probe_id                       = azurerm_lb_probe.lbp.id
 }
 
 
@@ -219,7 +219,7 @@ resource "azurerm_network_interface_backend_address_pool_association" "nicLB" {
 resource "azurerm_lb_probe" "lbp" {
   loadbalancer_id     = azurerm_lb.lbi.id
   name                = "ssh-health-probe"
-  protocol            = "TCP"
+  protocol            = "Tcp"
   port                = 80
   interval_in_seconds = 5
   number_of_probes    = 2
