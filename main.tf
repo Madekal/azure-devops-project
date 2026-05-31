@@ -204,6 +204,7 @@ resource "azurerm_lb_rule" "lb_rule" {
   backend_port                   = 80
   frontend_ip_configuration_name = "PublicIPAddress"
   backend_address_pool_ids       = [azurerm_lb_backend_address_pool.lbib.id]
+  probe_id                       = azurerm_lb_probe.lb_probe.id
 }
 
 
@@ -225,14 +226,3 @@ resource "azurerm_lb_probe" "lbp" {
 
 }
 
-
-resource "azurerm_lb_rule" "lb_rule" {
-  loadbalancer_id                = azurerm_lb.lbi.id
-  name                           = "HTTPRule"
-  protocol                       = "Tcp"
-  frontend_port                  = 80
-  backend_port                   = 80
-  frontend_ip_configuration_name = "PublicIPAddress"
-  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.lbib.id]
-  probe_id                       = azurerm_lb_probe.lb_probe.id # <-- Dopisana relacja do sondy!
-}
