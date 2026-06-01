@@ -37,7 +37,7 @@ jobs:
     - name: Terraform Plan
       run: terraform plan -input=false
 
-    # 6 - Apply
+    # 6 - Apply and push
     - name: Terraform Apply
       if: github.event_name == 'push'
       run: terraform apply -auto-approve -input=false
