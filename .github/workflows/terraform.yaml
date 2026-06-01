@@ -15,29 +15,29 @@ jobs:
       TF_VAR_vm_admin_password: ${{ secrets.VM_ADMIN_PASSWORD }}
 
     steps:
-    # 1. Pobranie kodu z repozytorium do pamięci robota
+    # 1 - Taking code from repository to a robot
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    # 2. Logowanie do Azure przy użyciu Twojego sekretu JSON
+    # 2 - Loging to Azure using secrets
     - name: Azure Login
       uses: azure/login@v2
       with:
         creds: ${{ secrets.AZURE_CLIENT_ID }}
 
-    # 3. Instalacja i konfiguracja narzędzia Terraform na maszynie bota
+    # 3 - Instalattion and configuration robot
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
 
-    # 4. Inicjalizacja Terraforma (robot połączy się z Twoim Azure Storage na plik stanu)
+    # 4 - Initialization Terraform 
     - name: Terraform Init
       run: terraform init
 
-    # 5. Generowanie planu zmian (sprawdzenie co robot chce zbudować)
+    # 5 - Generating a change plan
     - name: Terraform Plan
       run: terraform plan -input=false
 
-
+    # 6 - Apply
     - name: Terraform Apply
       if: github.event_name == 'push'
       run: terraform apply -auto-approve -input=false
