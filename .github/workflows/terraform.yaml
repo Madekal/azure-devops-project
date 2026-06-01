@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-    ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_CLIENT_ID }}
-    TF_VAR_vm_admin_password: ${{ secrets.VM_ADMIN_PASSWORD }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      TF_VAR_vm_admin_password: ${{ secrets.VM_ADMIN_PASSWORD }}
 
     steps:
     # 1. Pobranie kodu z repozytorium do pamięci robota
