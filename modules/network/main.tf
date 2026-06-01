@@ -84,6 +84,7 @@ resource "azurerm_public_ip" "lb_pip" {
   location            = var.location
   allocation_method   = "Static"
   sku = "Standard"
+  domain_name_label   = "projekt-devops-2k26"
 
 }
 
@@ -131,18 +132,18 @@ resource "azurerm_lb_probe" "lbp" {
 
 #DNS --------------------------------------------------
 
-resource "azurerm_dns_zone" "DNS_DevOpsProjectDK" {
-  name                = "devopsdk.pl"
-  resource_group_name = var.resource_group_name
-}
+#resource "azurerm_dns_zone" "DNS_DevOpsProjectDK" {
+  #name                = "devopsdk.pl"
+  #resource_group_name = var.resource_group_name
+#}
 
-resource "azurerm_dns_a_record" "DNS_Name" {
-  name                = "project"
-  zone_name           = azurerm_dns_zone.DNS_DevOpsProjectDK.name
-  resource_group_name = var.resource_group_name
-  ttl                 = 300
-  records             = [azurerm_public_ip.lb_pip.ip_address]
-}
+#resource "azurerm_dns_a_record" "DNS_Name" {
+ # name                = "project"
+  #zone_name           = azurerm_dns_zone.DNS_DevOpsProjectDK.name
+  #resource_group_name = var.resource_group_name
+  #ttl                 = 300
+  #records             = [azurerm_public_ip.lb_pip.ip_address]
+#}
 
 
 # MONITORING DIAGNOSTIC SETTINGS ------------------------
