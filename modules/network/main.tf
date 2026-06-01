@@ -153,10 +153,6 @@ resource "azurerm_monitor_diagnostic_setting" "lb_diagnostic" {
   log_analytics_workspace_id = var.log_analytics_workspace_id
 
   
-  enabled_log {
-    category = "LoadBalancerProbeHealthStatus"
-  }
-
   metric {
     category = "AllMetrics"
     enabled  = true
