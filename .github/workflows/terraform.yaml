@@ -9,6 +9,7 @@ jobs:
   terraform:
     name: 'Terraform Deployment'
     runs-on: ubuntu-latest
+    # ARM Secrets ---------------------------------------------
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
