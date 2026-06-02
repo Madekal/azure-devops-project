@@ -15,13 +15,22 @@ module "network" {
 }
 
 
+# Random password for VM deploy -------------------
+
+resource "random_password" "vm_password" {
+  length           = 16
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
+}
+# -------------------------------------------------
+
 module "compute" {
-  source               = "./modules/compute"
+  source                = "./modules/compute"
   location              = azurerm_resource_group.rg.location
   resource_group_name   = azurerm_resource_group.rg.name
   private_subnet_id     = module.network.private_subnet_id
-  vm_admin_password     = var.vm_admin_password
-  backend_pool_id     =   module.network.backend_pool_id
+  vm_admin_password     = random_password.vm_admin_password
+  backend_pool_id       = module.network.backend_pool_id
 }
 
 module "storage" {
