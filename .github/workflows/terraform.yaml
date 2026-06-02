@@ -21,30 +21,24 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    # 2 - Loging to Azure using secrets
-    - name: Azure Login
-      uses: azure/login@v2
-      with:
-        creds: ${{ secrets.AZURE_CLIENT_ID }}
-
-    # 3 - Instalattion and configuration robot
+    # 2 - Instalattion and configuration robot
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
 
-    # 4 - Initialization Terraform 
+    # 3 - Initialization Terraform 
     - name: Terraform Init
       run: terraform init
 
-    # 5 - Generating a change plan
+    # 4 - Generating a change plan
     - name: Terraform Plan
       run: terraform plan -input=false
 
-    # 6 - Apply and push
+    # 5 - Apply and push
     - name: Terraform Apply
       if: github.event_name == 'push'
       run: terraform apply -auto-approve -input=false
     
-    # 7 - Checokv
+    # 6 - Checokv
     - name: Checkout repo
       uses: actions/checkout@v4
 
