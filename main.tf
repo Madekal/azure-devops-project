@@ -29,7 +29,7 @@ module "compute" {
   location              = azurerm_resource_group.rg.location
   resource_group_name   = azurerm_resource_group.rg.name
   private_subnet_id     = module.network.private_subnet_id
-  vm_admin_password     = random_password.vm_admin_password
+  vm_admin_password     = random_password.vm_admin_password.result
   backend_pool_id       = module.network.backend_pool_id
 }
 
