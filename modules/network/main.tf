@@ -31,6 +31,7 @@ resource "azurerm_network_security_group" "nsg" {
 
 
   security_rule {
+    # checkov:skip=CKV_AZURE_160: "HTTP (port 80) must be public, beacause of Load Balancer in this project"
     name                       = "allowHTTPs"
     priority                   = 100
     direction                  = "Inbound"
@@ -44,15 +45,16 @@ resource "azurerm_network_security_group" "nsg" {
 
 
    security_rule {
-    name                       = "AllowSSH"
-    priority                   = 110
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "*"
-    source_port_range          = "*"
-    destination_port_range     = "22"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
+    name                        = "AllowSSH"
+    priority                    = 110
+    direction                   = "Inbound"
+    access                      = "Allow"
+    protocol                    = "Tcp"
+    source_port_range           = "*"
+    destination_port_range      = "22"
+    source_address_prefix       = "VirtualNetwork"
+    destination_address_prefix  = "*"
+    
   }
 
 

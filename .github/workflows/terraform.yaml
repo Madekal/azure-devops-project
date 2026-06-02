@@ -46,10 +46,9 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v4
 
-    # === TUTAJ WSKAKUJE CHECOKV ===
     - name: Run Checkov Security Scan
       uses: bridgecrewio/checkov-action@master
       with:
         framework: terraform
         output_format: cli
-        # soft_fail: true #
+        # soft_fail: true # test

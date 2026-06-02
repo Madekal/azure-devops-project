@@ -12,7 +12,12 @@ resource "azurerm_network_interface" "nic" {
   }
 }
 
-resource "azurerm_linux_virtual_machine" "example" {
+resource "azurerm_linux_virtual_machine" "vm-lx" {
+  # checkov:skip=CKV_AZURE_1: "Using admin password just for education purpose"
+  # checkov:skip=CKV_AZURE_149: "Using admin password just for education purpose"
+  # checkov:skip=CKV_AZURE_50: "Extensions are just for education purpose"
+  # checkov:skip=CKV_AZURE_178: "SSH are not needed for this project"
+
   count               = 2
   name                = "vm-devops-project-${count.index}"
   resource_group_name = var.resource_group_name
@@ -30,7 +35,7 @@ resource "azurerm_linux_virtual_machine" "example" {
               sudo apt-get install -y apache2
               sudo systemctl start apache2
               sudo systemctl enable apache2
-              echo "<h1>Witaj z maszyny nr: ${count.index}</h1>" | sudo tee /var/www/html/index.html
+              echo "<h1>To maszyna nr: ${count.index}</h1>" | sudo tee /var/www/html/index.html
               EOF
   )
 
