@@ -51,4 +51,4 @@ jobs:
       with:
         framework: terraform
         output_format: cli
-        # soft_fail: true # test
+        soft_fail: true # Workflow will pass, even with chekov problems

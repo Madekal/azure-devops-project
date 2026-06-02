@@ -12,6 +12,7 @@ resource "azurerm_storage_account" "st" {
   # checkov:skip=CKV_AZURE_44: "Default minimal TLS version is acceptable for this testing scenario"
   # checkov:skip=CKV2_AZURE_21: "Blob storage read logging is not required for this non-production environment"
   # checkov:skip=CKV2_AZURE_40: "Shared Key authorization is allowed for development and deployment purposes"
+  # checkov:skip=CKV2_AZURE_40: "Shared Key authorization is allowed for development and deployment purposes"
 
   name                     = "storagedevops2026project"
   resource_group_name      = var.resource_group_name
