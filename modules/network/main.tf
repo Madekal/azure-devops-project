@@ -74,11 +74,15 @@ resource "azurerm_network_security_group" "nsg" {
 
 
 
-resource "azurerm_subnet_network_security_group_association" "nsa" {
+resource "azurerm_subnet_network_security_group_association" "nsa_private" {
   subnet_id                 = azurerm_subnet.snet2.id
   network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
+resource "azurerm_subnet_network_security_group_association" "nsa_public" {
+  subnet_id                 = azurerm_subnet.snet1.id
+  network_security_group_id = azurerm_network_security_group.nsg.id
+}
 
 resource "azurerm_public_ip" "lb_pip" {
   name                = "PublicIPAddressProjectLB"

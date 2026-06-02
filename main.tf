@@ -8,10 +8,10 @@ resource "azurerm_resource_group" "rg" {
 }
 
 module "network" {
-  source                = "./modules/network"
-  location              = azurerm_resource_group.rg.location
-  resource_group_name   = azurerm_resource_group.rg.name
-  log_analytics_workspace_id = module.monitoring.log_analytics_workspace_id
+  source                      = "./modules/network"
+  location                    = azurerm_resource_group.rg.location
+  resource_group_name         = azurerm_resource_group.rg.name
+  log_analytics_workspace_id  = module.monitoring.log_analytics_workspace_id
 }
 
 

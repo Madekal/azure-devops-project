@@ -20,6 +20,5 @@ variable "private_subnet_id"{
 }
 
 variable "backend_pool_id" {
-  type        = string
-  description = "ID backed from Load Balancer"
+  type        = "Backend ID pool from Load Balancer"
 }
