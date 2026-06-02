@@ -42,7 +42,7 @@ jobs:
       if: github.event_name == 'push'
       run: terraform apply -auto-approve -input=false
     
-    steps:
+    # 7 - Checokv
     - name: Checkout repo
       uses: actions/checkout@v4
 
