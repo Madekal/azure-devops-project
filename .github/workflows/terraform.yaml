@@ -42,3 +42,14 @@ jobs:
       if: github.event_name == 'push'
       run: terraform apply -auto-approve -input=false
     
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    # === TUTAJ WSKAKUJE CHECOKV ===
+    - name: Run Checkov Security Scan
+      uses: bridgecrewio/checkov-action@master
+      with:
+        framework: terraform
+        output_format: cli
+        # soft_fail: true #
