@@ -17,7 +17,7 @@ module "network" {
 
 # Random password for VM deploy -------------------
 
-resource "random_password" "vm_password" {
+resource "random_password" "vm_admin_password" {
   length           = 16
   special          = true
   override_special = "!#$%&*()-_=+[]{}<>:?"
