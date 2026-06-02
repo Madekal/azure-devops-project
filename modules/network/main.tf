@@ -74,7 +74,7 @@ resource "azurerm_network_security_group" "nsg" {
 
 
 
-resource "azurerm_subnet_network_security_group_association" "nsa_private" {
+resource "azurerm_subnet_network_security_group_association" "nsa" {
   subnet_id                 = azurerm_subnet.snet2.id
   network_security_group_id = azurerm_network_security_group.nsg.id
 }
