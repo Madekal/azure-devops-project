@@ -19,6 +19,7 @@ resource "azurerm_linux_virtual_machine" "vm-lx" {
   # checkov:skip=CKV_AZURE_178: "SSH are not needed for this project"
 
   count               = 2
+  zone                = tostring(count.index + 1)
   name                = "vm-devops-project-${count.index}"
   resource_group_name = var.resource_group_name
   location            = var.location
