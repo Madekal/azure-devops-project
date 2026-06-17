@@ -1,9 +1,9 @@
 variable "resource_group_name" {
   type        = string
-  description = "Nazwa grupy zasobów przekazana z głównego main.tf"
+  description = "Name from main resource group"
 }
 
 variable "location" {
   type        = string
-  description = "Lokalizacja przekazana z głównego main.tf"
+  description = "Location from main resource group"
 }
