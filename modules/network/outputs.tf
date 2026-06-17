@@ -8,7 +8,7 @@ output "backend_pool_id" {
   description = "ID backend addresses pool from Load Balancer received to machines"
 }
 
-variable "log_analytics_workspace_id" {
-  type        = string
+output "log_analytics_workspace_id" {
+  value = var.log_analytics_workspace_id
   description = "ID bazy Log Analytics przekazane z modułu monitoring"
 }
