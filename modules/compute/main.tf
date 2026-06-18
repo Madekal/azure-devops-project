@@ -29,7 +29,7 @@ resource "azurerm_linux_virtual_machine" "vm-lx" {
   admin_password = var.vm_admin_password
   
 
-  # Skrypt instalujący prosty serwer Apache i generujący unikalny napis dla każdej maszyny
+  # A script that installs a simple Apache server and runs a string for each machine
   custom_data = base64encode(<<-EOF
               #!/bin/bash
               sudo apt-get update -y
