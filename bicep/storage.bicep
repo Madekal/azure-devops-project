@@ -1,11 +1,11 @@
-param resourceName string = uniqueString(resourceGroup().id)
 param location string = 'swedencentral'
 param storageSku string = 'Standard_LRS'
+param storageAccountName string = 'storage2026devopsproject'
 
 
 // ======================= STORAGE ACCOUNT =====================
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
-  name: resourceName
+  name: storageAccountName
   location: location
   sku: {
     name: storageSku
