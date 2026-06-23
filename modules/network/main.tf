@@ -155,7 +155,7 @@ resource "azurerm_lb_probe" "lbp" {
 # MONITORING DIAGNOSTIC SETTINGS ------------------------
 
 resource "azurerm_monitor_diagnostic_setting" "lb_diagnostic" {
-  name                       = "ds-load-balancer"
+  name                       = "ds-load-balancer-projectAZ"
   target_resource_id         = azurerm_lb.lbi.id
   log_analytics_workspace_id = var.log_analytics_workspace_id
 
