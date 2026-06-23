@@ -17,28 +17,8 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
     steps:
-    # 1 - Taking code from repository to a robot
-    - name: Checkout Code
-      uses: actions/checkout@v4
-
-    # 2 - Instalattion and configuration robot
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v3
-
-    # 3 - Initialization Terraform 
-    - name: Terraform Init
-      run: terraform init
-
-    # 4 - Generating a change plan
-    - name: Terraform Plan
-      run: terraform plan -input=false
-
-    # 5 - Apply and push
-    - name: Terraform Apply
-      if: github.event_name == 'push'
-      run: terraform apply -auto-approve -input=false
     
-    # 6 - Checokv
+    # 1 - Checokv
     - name: Checkout repo
       uses: actions/checkout@v4
 
@@ -48,6 +28,30 @@ jobs:
         framework: terraform
         output_format: cli
         soft_fail: true # Workflow will pass, even with chekov problems
+
+
+    # 2 - Taking code from repository to a robot
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    # 3 - Instalattion and configuration robot
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+
+    # 4 - Initialization Terraform 
+    - name: Terraform Init
+      run: terraform init
+
+    # 5 - Generating a change plan
+    - name: Terraform Plan
+      run: terraform plan -input=false
+
+    # 6 - Apply and push
+    - name: Terraform Apply
+      if: github.event_name == 'push'
+      run: terraform apply -auto-approve -input=false
+    
+
 
 
       

@@ -1,7 +1,6 @@
 param location string = 'swedencentral'
 param storageSku string = 'Standard_LRS'
-param storageAccountName string = 'storage2026devopsprojectbicep'
-
+param storageAccountName string = 'strg2026azprojectdevops'
 
 // ======================= STORAGE ACCOUNT =====================
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {

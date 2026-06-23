@@ -15,7 +15,7 @@ resource "azurerm_storage_account" "st" {
   # checkov:skip=CKV2_AZURE_40: "Shared Key authorization is allowed for development and deployment purposes"
 
   name                     = "storagedevops2026project"
-  resource_group_name      = var.resource_group_name
+  resource_group_name      = "terraform-managment"
   location                 = var.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
