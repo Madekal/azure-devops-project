@@ -33,11 +33,11 @@ module "compute" {
   backend_pool_id       = module.network.backend_pool_id
 }
 
-module "storage" {
-  source                = "./modules/storage"
-  location              = azurerm_resource_group.rg.location
-  resource_group_name   = azurerm_resource_group.rg.name
-}
+#module "storage" {
+ # source                = "./modules/storage"
+ # location              = azurerm_resource_group.rg.location
+ # resource_group_name   = azurerm_resource_group.rg.name
+#}
 
 module "monitoring" {
   source                = "./modules/monitoring"

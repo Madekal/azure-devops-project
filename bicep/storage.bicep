@@ -1,6 +1,6 @@
 param location string = 'swedencentral'
 param storageSku string = 'Standard_LRS'
-param storageAccountName string = 'storage2026devopsproject'
+param storageAccountName string = 'storage2026devopsprojectbicep'
 
 
 // ======================= STORAGE ACCOUNT =====================
