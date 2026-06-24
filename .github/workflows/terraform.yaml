@@ -32,7 +32,7 @@ jobs:
           soft_fail: true # Workflow will pass, even with chekov problems
 
 
-  
+  # 2 - Validate
   validate:
     name: 'Terraform validate'
     runs-on: ubuntu-latest
@@ -53,7 +53,7 @@ jobs:
       - name: Terraform validate
         run: terraform validate
 
-    
+  # 3 - Plan
   plan:
     name: 'Terraform Plan'
     runs-on: ubuntu-latest
@@ -71,7 +71,7 @@ jobs:
       - name: Terraform plan
         run: terraform plan
 
-
+  # 4 - apply *auto-approve*
   apply:
     name: 'Terraform apply'
     runs-on: ubuntu-latest
@@ -90,7 +90,7 @@ jobs:
         run: terraform plan
     
       - name: Terraform apply
-        run: terraform apply
+        run: terraform apply -auto-approve
 
 
 
