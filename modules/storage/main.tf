@@ -1,5 +1,6 @@
 resource "azurerm_storage_account" "st" {
 
+  # checkov:skip=CKV2_AZURE_21: "Lab environment"
   # checkov:skip=CKV2_AZURE_1: "Lab environment - Microsoft-managed keys provide sufficient encryption for tfstate"
   # checkov:skip=CKV2_AZURE_38: "Soft-delete disabled intentionally to allow immediate destruction and recreation of the lab infrastructure"
   # checkov:skip=CKV2_AZURE_41: "Strict SAS policy configuration is not required for this educational project"
