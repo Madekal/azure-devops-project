@@ -5,52 +5,92 @@ on:
     branches:
       - main
 
-jobs:
-  terraform:
-    name: 'Terraform Deployment'
-    runs-on: ubuntu-latest
-    # ARM Secrets ------------------------------------------
-    env:
-      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+# ARM Secrets ------------------------------------------
+env:
+  ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
+
+jobs:
+
+  # 1 - Checokv
+  Security:
+    name: 'Terraform deployment'
+    runs-on: ubuntu-latest
     steps:
     
-    # 1 - Checokv
-    - name: Checkout repo
-      uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-    - name: Run Checkov Security Scan
-      uses: bridgecrewio/checkov-action@master
-      with:
-        framework: terraform
-        output_format: cli
-        soft_fail: true # Workflow will pass, even with chekov problems
+      - name: Run Checkov Security Scan
+        uses: bridgecrewio/checkov-action@master
+        with:
+          framework: terraform
+          output_format: cli
+          soft_fail: true # Workflow will pass, even with chekov problems
 
 
-    # 2 - Taking code from repository to a robot
-    - name: Checkout Code
-      uses: actions/checkout@v4
+  
+  validate:
+    name: 'Terraform validate'
+    runs-on: ubuntu-latest
+    needs: Security
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    # 3 - Instalattion and configuration robot
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v3
-
-    # 4 - Initialization Terraform 
-    - name: Terraform Init
-      run: terraform init
-
-    # 5 - Generating a change plan
-    - name: Terraform Plan
-      run: terraform plan -input=false
-
-    # 6 - Apply and push
-    - name: Terraform Apply
-      if: github.event_name == 'push'
-      run: terraform apply -auto-approve -input=false
     
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+   
+      - name: Terraform Init
+        run: terraform init
+
+    
+      - name: Terraform validate
+        run: terraform validate
+
+    
+  plan:
+    name: 'Terraform Plan'
+    runs-on: ubuntu-latest
+    needs: validate
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+      
+      - name: Terraform init
+        runs: terraform init
+
+      - name: Terraform plan
+        runs: terraform plan
+
+
+  apply:
+    name: 'Terraform apply'
+    runs-on: ubuntu-latest
+    needs: plan
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform init
+        runs: terraform init
+
+      - name: Terraform plan
+        runs: terraform plan
+    
+      - name: Terraform apply
+        runs: terraform apply
 
 
 
