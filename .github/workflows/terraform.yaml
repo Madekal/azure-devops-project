@@ -66,10 +66,10 @@ jobs:
         uses: hashicorp/setup-terraform@v3
       
       - name: Terraform init
-        runs: terraform init
+        run: terraform init
 
       - name: Terraform plan
-        runs: terraform plan
+        run: terraform plan
 
 
   apply:
@@ -84,13 +84,13 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform init
-        runs: terraform init
+        run: terraform init
 
       - name: Terraform plan
-        runs: terraform plan
+        run: terraform plan
     
       - name: Terraform apply
-        runs: terraform apply
+        run: terraform apply
 
 
 
