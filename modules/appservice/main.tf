@@ -1,5 +1,10 @@
+resource "random_integer" "ri" {
+  min = 10000
+  max = 99999
+}
+
 resource "azurerm_container_registry" "acr" {
-  name                = "projectcontainerregistry"
+  name                = "webapp-acr-${random_integer.ri.result}"
   resource_group_name = var.resource_group_name
   location            = var.location
   sku                 = "Basic"
@@ -9,7 +14,7 @@ resource "azurerm_container_registry" "acr" {
 
 
 resource "azurerm_service_plan" "apsp" {
-  name                = "projectserviceplan"
+  name                = "webapp-asps-${random_integer.ri.result}"
   location            = var.location
   resource_group_name = var.resource_group_name
   os_type             = "Linux"
@@ -17,7 +22,7 @@ resource "azurerm_service_plan" "apsp" {
 }
 
 resource "azurerm_linux_web_app" "alp" {
-  name                = "projectappservice"
+  name                = "webapp-alp-${random_integer.ri.result}"
   location            = var.location
   resource_group_name = var.resource_group_name
   service_plan_id     = azurerm_service_plan.apsp.id
