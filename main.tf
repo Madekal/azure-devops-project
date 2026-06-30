@@ -45,3 +45,9 @@ module "monitoring" {
   resource_group_name   = azurerm_resource_group.rg.name
 
 }
+
+module "appservice" {
+  source = "./modules/appservice"
+  location = azurerm_resource_group.location
+  resource_group_name = azurerm_resource_group.rg
+}
