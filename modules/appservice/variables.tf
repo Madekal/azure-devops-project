@@ -7,3 +7,4 @@ variable "location" {
   type        = string
   description = "Location from main resource group"
 }
+

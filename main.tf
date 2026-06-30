@@ -24,6 +24,17 @@ resource "random_password" "vm_admin_password" {
 }
 # -------------------------------------------------
 
+
+
+module "monitoring" {
+  source                = "./modules/monitoring"
+  location              = azurerm_resource_group.rg.location
+  resource_group_name   = azurerm_resource_group.rg.name
+  
+
+}
+
+
 module "compute" {
   source                = "./modules/compute"
   location              = azurerm_resource_group.rg.location
@@ -31,6 +42,7 @@ module "compute" {
   private_subnet_id     = module.network.private_subnet_id
   vm_admin_password     = random_password.vm_admin_password.result
   backend_pool_id       = module.network.backend_pool_id
+  data_collection_rule_id = module.monitoring.data_collection_rule_id
 }
 
 #module "storage" {
@@ -39,12 +51,7 @@ module "compute" {
  # resource_group_name   = azurerm_resource_group.rg.name
 #}
 
-module "monitoring" {
-  source                = "./modules/monitoring"
-  location              = azurerm_resource_group.rg.location
-  resource_group_name   = azurerm_resource_group.rg.name
 
-}
 
 module "appservice" {
   source = "./modules/appservice"

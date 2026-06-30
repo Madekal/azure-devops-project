@@ -59,10 +59,27 @@ resource "azurerm_linux_virtual_machine" "vm-lx" {
   }
 }   
 
+resource "azurerm_virtual_machine_extension" "ama" {
+  count                      = 2
+  name                       = "AzureMonitorLinuxAgent"
+  virtual_machine_id         = azurerm_linux_virtual_machine.vm-lx[count.index].id
+  publisher                  = "Microsoft.Azure.Monitor"
+  type                       = "AzureMonitorLinuxAgent"
+  type_handler_version       = "1.0"
+  auto_upgrade_minor_version = true
+}
+
 
 resource "azurerm_network_interface_backend_address_pool_association" "nicLB" {
   count                   = 2
   network_interface_id    = azurerm_network_interface.nic[count.index].id
   ip_configuration_name   = "ic-devops"
   backend_address_pool_id = var.backend_pool_id
+}
+
+resource "azurerm_monitor_data_collection_rule_association" "dcra" {
+  count                      = 2
+  name                       = "dcra-vm-${count.index}"
+  target_resource_id         = azurerm_linux_virtual_machine.vm-lx[count.index].id
+  data_collection_rule_id    = var.data_collection_rule_id
 }

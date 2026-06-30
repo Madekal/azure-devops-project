@@ -23,3 +23,8 @@ variable "backend_pool_id" {
     type           = string
     description    = "Backend ID pool from Load Balancer"
 }
+
+
+variable "data_collection_rule_id" {
+  type = string
+}
