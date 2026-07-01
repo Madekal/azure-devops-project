@@ -27,7 +27,7 @@ resource "azurerm_monitor_data_collection_rule" "mdcr" {
 
     data_sources {
     performance_counter {
-      streams                       = ["Microsoft-InsightsMetrics"]
+      streams                       = ["Microsoft-Perf"]
       sampling_frequency_in_seconds = 60
       counter_specifiers            = ["\\Processor(_Total)\\% Processor Time", "\\Memory\\% Committed Bytes In Use"]
       name                           = "perfCounters"
